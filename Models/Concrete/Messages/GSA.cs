@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using ParsingManager.DL.Interfaces;
+using ParsingManager.Interfaces;
 
-namespace ParsingManager.DL.Models.Concrete.Messages
+namespace ParsingManager.Models.Concrete.Messages
 {
-	public class GSA : IMessage
+	public class GSA : IMessage, IReceiveRequiredData
 	{
 		public char OperationMode;
 		public int NavigationMode;
@@ -85,5 +85,11 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return this;
 		}
-	}
+		public void RetrieveSelectedData(Instance instance)
+		{
+			instance.HDOP=HDOP;
+			instance.PDOP=PDOP;
+			instance.VDOP=VDOP;
+		}
+		}
 }

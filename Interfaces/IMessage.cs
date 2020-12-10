@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ParsingManager.DL.Interfaces
+namespace ParsingManager.Interfaces 
 {
-	public interface IMessage
+	public interface IMessage : IReceiveRequiredData
 	{
 		public bool CheckDataSize();
 		public void FillMesage();

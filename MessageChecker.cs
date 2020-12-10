@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ParsingManager.DL
+namespace ParsingManager
 {
-	public class ParserService
+	public class MessageChecker
 	{
 		const char FirstSymbol = '$';
 		const char chSumDelimiter = '*';
 		const char FieldDelimiter = ',';
-		const int chSumSizeCharsASCII = 4; //4 when using Read, 2 wehn reading Line
+		const int chSumSizeCharsASCII = 2; //4 when using Read, 2 wehn reading Line
 		const int constellationPlace = 1;
 		const int firstElement = 0;
 		char[] Delimiters = { FieldDelimiter, chSumDelimiter };
 
-		public ParserService(string parsingLine)
+		public MessageChecker(string parsingLine)
 		{
 			ParsingLine = parsingLine;
 		}

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using ParsingManager.DL.Interfaces;
+using ParsingManager.Interfaces;
 
 
-namespace ParsingManager.DL.Models.Concrete.Messages
+namespace ParsingManager.Models.Concrete.Messages
 {
-	public class VTG : IMessage
+	public class VTG : IMessage, IReceiveRequiredData
 	{
 		public double Course;
 		public char CourseUnits;
@@ -60,5 +60,9 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return this;
 		}
-	}
+		public void RetrieveSelectedData(Instance instance)
+		{
+			instance.Speed = Speed;
+		}
+		}
 }

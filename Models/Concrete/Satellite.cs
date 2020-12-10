@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ParsingManager.DL.Models.Concrete
+namespace ParsingManager.Models.Concrete
 {
-	class Satellite
+	public class Satellite
 	{
-		int SatelliteID;
-		//IEnumerable Constellation;
-		int SatelliteCNO;
-		int SatelliteElevation;
-		int SatelliteAzimuth;
+		public int SatelliteID;
+		public int SatelliteCNO;
+		public int SatelliteElevation;
+		public int SatelliteAzimuth;
 	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ParsingManager.DL.Models.Concrete
+namespace ParsingManager.Models.Concrete
 {
 	public class Vehicle
 	{

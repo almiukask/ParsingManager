@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using ParsingManager.DL.Interfaces;
+using ParsingManager.Interfaces;
 
-namespace ParsingManager.DL.Models.Concrete.Messages
+namespace ParsingManager.Models.Concrete.Messages
 {
-	public class GGA : IMessage
+	public class GGA : IMessage, IReceiveRequiredData
 	{
 		public double TimeStampUTC;
 		public double Latitude;
@@ -14,7 +14,7 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		public double Longitude;
 		public char DirLongitude;
 		public int QualityIndic;
-		public int NumberofSVs;
+		public int NumberOfSVsUsed;
 		public double HDOP;
 		public double MSLAltitude;
 		public char AltitudeUnits;
@@ -29,7 +29,7 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 			SeparatedFields = separatedFields;
 		}
 
-		public GGA(double timeStampUTC, double latitude, char dirLatitude, double longitude, char dirLongitude, int qualityIndic, int numberofSVs, double hDOP, double mSLAltitude, char altitudeUnits, double geoidSeparation, char separationUnits, double dGNSSAge, int dGNSSStationID)
+		public GGA(double timeStampUTC, double latitude, char dirLatitude, double longitude, char dirLongitude, int qualityIndic, int numberOfSVsUsed, double hDOP, double mSLAltitude, char altitudeUnits, double geoidSeparation, char separationUnits, double dGNSSAge, int dGNSSStationID)
 		{
 			TimeStampUTC = timeStampUTC;
 			Latitude = latitude;
@@ -37,7 +37,7 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 			Longitude = longitude;
 			DirLongitude = dirLongitude;
 			QualityIndic = qualityIndic;
-			NumberofSVs = numberofSVs;
+			NumberOfSVsUsed = numberOfSVsUsed;
 			HDOP = hDOP;
 			MSLAltitude = mSLAltitude;
 			AltitudeUnits = altitudeUnits;
@@ -57,7 +57,7 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 			double.TryParse(SeparatedFields[4], NumberStyles.Any, CultureInfo.InvariantCulture, out Longitude);
 			char.TryParse(SeparatedFields[5], out DirLongitude);
 			int.TryParse(SeparatedFields[6], out QualityIndic);
-			int.TryParse(SeparatedFields[7], out NumberofSVs);
+			int.TryParse(SeparatedFields[7], out NumberOfSVsUsed);
 			double.TryParse(SeparatedFields[8], NumberStyles.Any, CultureInfo.InvariantCulture, out HDOP);
 			double.TryParse(SeparatedFields[9], NumberStyles.Any, CultureInfo.InvariantCulture, out MSLAltitude);
 			char.TryParse(SeparatedFields[10], out AltitudeUnits);
@@ -74,6 +74,18 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		public IMessage GetData()
 		{
 			return this;
+		}
+
+		public void RetrieveSelectedData(Instance instance)
+		{
+			instance.TimeStampUTC = TimeStampUTC;
+			instance.Latitude = Latitude;
+			instance.DirLatitude = DirLatitude;
+			instance.Longitude = Longitude;
+			instance.DirLongitude = DirLongitude;
+			instance.HDOP = HDOP;
+			instance.MSLAltitude = MSLAltitude;
+			instance.NumberOfSVsUsed = NumberOfSVsUsed;
 		}
 	}
 }

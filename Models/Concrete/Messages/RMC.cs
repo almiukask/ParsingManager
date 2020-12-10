@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using ParsingManager.DL.Interfaces;
+using ParsingManager.Interfaces;
 
-namespace ParsingManager.DL.Models.Concrete.Messages
+namespace ParsingManager.Models.Concrete.Messages
 {
-	public class RMC : IMessage
+	public class RMC : IMessage, IReceiveRequiredData
 	{
 		public double TimeStampUTC;
 		public char Status;
@@ -71,5 +71,14 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return this;
 		}
-	}
+		public void RetrieveSelectedData(Instance instance)
+		{
+			instance.TimeStampUTC = TimeStampUTC;
+			instance.Latitude = Latitude;
+			instance.DirLatitude = DirLatitude;
+			instance.Longitude = Longitude;
+			instance.DirLongitude = DirLongitude;
+			instance.Speed = Speed;
+		}
+		}
 }

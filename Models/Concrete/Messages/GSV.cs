@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ParsingManager.DL.Interfaces;
+using ParsingManager.Interfaces;
 
-namespace ParsingManager.DL.Models.Concrete.Messages
+namespace ParsingManager.Models.Concrete.Messages
 {
-	public class GSV : IMessage
+	public class GSV : IMessage, IReceiveRequiredData
 	{
 		public int NumberOfMessages;
 		public int NumberOfCurrentMessage;
 		public int QuantityOfSatellites;
-		public List<int> SatelliteID= new List<int>();
-		public List<int> SatelliteElevation = new List<int>();
-		public List<int> SatelliteAzimuth = new List<int>();
-		public List<int> SatelliteCNO = new List<int>();
+		List<Satellite> Satellites = new List<Satellite>();
 		//public int SignalID; only NMEA 4.1
 
 		int FieldCount;
@@ -29,15 +26,12 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 			FieldCount = CountFiels();
 		}
 
-		public GSV(int numberOfMessages, int numberOfCurrentMessage, int quantityOfSatellites, List<int> satelliteID, List<int> satelliteElevation, List<int> satelliteAzimuth, List<int> satelliteCNO /*,int signalID*/)
+		public GSV(int numberOfMessages, int numberOfCurrentMessage, int quantityOfSatellites, List<Satellite> satellites /*,int signalID*/)
 		{
 			NumberOfMessages = numberOfMessages;
 			NumberOfCurrentMessage = numberOfCurrentMessage;
 			QuantityOfSatellites = quantityOfSatellites;
-			SatelliteID = satelliteID;
-			SatelliteElevation = satelliteElevation;
-			SatelliteAzimuth = satelliteAzimuth;
-			SatelliteCNO = satelliteCNO;
+			Satellites = satellites;
 			//SignalID = signalID;
 		}
 
@@ -47,14 +41,15 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 			int temp = 0;
 			for (int i = 0; i < SatellitesInMessge; i++)
 			{
+				Satellites.Add(new Satellite());
 				int.TryParse(SeparatedFields[i + 4], out temp);
-				SatelliteID.Add(temp);
+				Satellites[i].SatelliteID=temp;
 				int.TryParse(SeparatedFields[i + 5], out temp);
-				SatelliteElevation.Add(temp);
+				Satellites[i].SatelliteElevation=temp;
 				int.TryParse(SeparatedFields[i + 6], out temp);
-				SatelliteAzimuth.Add(temp);
+				Satellites[i].SatelliteAzimuth=temp;
 				int.TryParse(SeparatedFields[i + 7], out temp);
-				SatelliteCNO.Add(temp);
+				Satellites[i].SatelliteCNO=temp;
 
 			}
 			int.TryParse(SeparatedFields[NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite], out temp);
@@ -85,5 +80,13 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return this;
 		}
-	}
+		public void RetrieveSelectedData(Instance instance)
+		{
+
+			foreach (var sat in Satellites)
+			{ instance.SatellitesInfo.Add(sat); }
+			instance.QuantityOfSatellites = QuantityOfSatellites;
+
+		}
+		}
 }
