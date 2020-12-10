@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ParsingManager
+namespace ParsingManager.DL.Models.Concrete
 {
 	public class Instance
 	{

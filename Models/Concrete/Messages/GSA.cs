@@ -1,34 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using ParsingManager.DL.Interfaces;
 
-namespace ParsingManager.Models.Concrete.Messages
+namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	class GSA
+	public class GSA : IMessageService
 	{
-		char OperationMode;
-		int NavigationMode;
-		int Satellite1;
-		int Satellite2;
-		int Satellite3;
-		int Satellite4;
-		int Satellite5;
-		int Satellite6;
-		int Satellite7;
-		int Satellite8;
-		int Satellite9;
-		int Satellite10;
-		int Satellite11;
-		int Satellite12;
-		double PDOP;
-		double HDOP;
-		double VDOP;
-		int SystemID;
-		const int MessageCount = 20;
+		public char OperationMode;
+		public int NavigationMode;
+		public int Satellite1;
+		public int Satellite2;
+		public int Satellite3;
+		public int Satellite4;
+		public int Satellite5;
+		public int Satellite6;
+		public int Satellite7;
+		public int Satellite8;
+		public int Satellite9;
+		public int Satellite10;
+		public int Satellite11;
+		public int Satellite12;
+		public double PDOP;
+		public double HDOP;
+		public double VDOP;
+		//int SystemID; Only NMEA 4.1
+		const int FieldCount = 19;
 		public GSA(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
 		}
+
+		public GSA(char operationMode, int navigationMode, int satellite1, int satellite2, int satellite3, int satellite4, int satellite5, int satellite6, int satellite7, int satellite8, int satellite9, int satellite10, int satellite11, int satellite12, double pDOP, double hDOP, double vDOP)
+		{
+			OperationMode = operationMode;
+			NavigationMode = navigationMode;
+			Satellite1 = satellite1;
+			Satellite2 = satellite2;
+			Satellite3 = satellite3;
+			Satellite4 = satellite4;
+			Satellite5 = satellite5;
+			Satellite6 = satellite6;
+			Satellite7 = satellite7;
+			Satellite8 = satellite8;
+			Satellite9 = satellite9;
+			Satellite10 = satellite10;
+			Satellite11 = satellite11;
+			Satellite12 = satellite12;
+			PDOP = pDOP;
+			HDOP = hDOP;
+			VDOP = vDOP;
+		}
+
 		public string[] SeparatedFields { get; set; }
 		public void FillMesage()
 		{
@@ -47,15 +71,34 @@ namespace ParsingManager.Models.Concrete.Messages
 			int.TryParse(SeparatedFields[12], out Satellite10);
 			int.TryParse(SeparatedFields[13], out Satellite11);
 			int.TryParse(SeparatedFields[14], out Satellite12);
-			double.TryParse(SeparatedFields[15], out PDOP);
-			double.TryParse(SeparatedFields[16], out HDOP);
-			double.TryParse(SeparatedFields[17], out VDOP);
-			int.TryParse(SeparatedFields[18], out SystemID);
+			double.TryParse(SeparatedFields[15], NumberStyles.Any, CultureInfo.InvariantCulture, out PDOP);
+			double.TryParse(SeparatedFields[16], NumberStyles.Any, CultureInfo.InvariantCulture, out HDOP);
+			double.TryParse(SeparatedFields[17], NumberStyles.Any, CultureInfo.InvariantCulture, out VDOP);
+			//int.TryParse(SeparatedFields[18], out SystemID); only NMEA 4.1
 		}
 		public bool CheckDataSize()
 		{
-			return MessageCount == SeparatedFields.Length ? true : false;
+			return FieldCount == SeparatedFields.Length ? true : false;
 		}
-
+		public object GetData()
+		{
+			return new GSA
+				(
+					OperationMode, NavigationMode,
+					Satellite1,
+					Satellite2,
+					Satellite3,
+					Satellite4,
+					Satellite5,
+					Satellite6,
+					Satellite7,
+					Satellite8,
+					Satellite9,
+					Satellite10,
+					Satellite11,
+					Satellite12,
+					PDOP, HDOP, VDOP
+				);
+		}
 	}
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using ParsingManager.DL.Interfaces;
 
-namespace ParsingManager.Models.Concrete.Messages
+namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	class GGA
+	public class GGA : IMessageService
 	{
 		public double TimeStampUTC;
 		public double Latitude;
@@ -20,36 +22,67 @@ namespace ParsingManager.Models.Concrete.Messages
 		public char SeparationUnits;
 		public double DGNSSAge;
 		public int DGNSSStationID;
-		const int MessageCount = 16;
+		const int FieldCount = 16;
 
 		public GGA(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
 		}
+
+		public GGA(double timeStampUTC, double latitude, char dirLatitude, double longitude, char dirLongitude, int qualityIndic, int numberofSVs, double hDOP, double mSLAltitude, char altitudeUnits, double geoidSeparation, char separationUnits, double dGNSSAge, int dGNSSStationID)
+		{
+			TimeStampUTC = timeStampUTC;
+			Latitude = latitude;
+			DirLatitude = dirLatitude;
+			Longitude = longitude;
+			DirLongitude = dirLongitude;
+			QualityIndic = qualityIndic;
+			NumberofSVs = numberofSVs;
+			HDOP = hDOP;
+			MSLAltitude = mSLAltitude;
+			AltitudeUnits = altitudeUnits;
+			GeoidSeparation = geoidSeparation;
+			SeparationUnits = separationUnits;
+			DGNSSAge = dGNSSAge;
+			DGNSSStationID = dGNSSStationID;
+		}
+
 		public string[] SeparatedFields { get; set; }
 
 		public void FillMesage()
 		{
-			double.TryParse(SeparatedFields[1], out TimeStampUTC);
-			double.TryParse(SeparatedFields[2], out Latitude);
+			double.TryParse(SeparatedFields[1], NumberStyles.Any, CultureInfo.InvariantCulture, out TimeStampUTC);
+			double.TryParse(SeparatedFields[2], NumberStyles.Any, CultureInfo.InvariantCulture, out Latitude);
 			char.TryParse(SeparatedFields[3], out DirLatitude);
-			double.TryParse(SeparatedFields[4], out Longitude);
+			double.TryParse(SeparatedFields[4], NumberStyles.Any, CultureInfo.InvariantCulture, out Longitude);
 			char.TryParse(SeparatedFields[5], out DirLongitude);
 			int.TryParse(SeparatedFields[6], out QualityIndic);
 			int.TryParse(SeparatedFields[7], out NumberofSVs);
-			double.TryParse(SeparatedFields[8], out HDOP);
-			double.TryParse(SeparatedFields[9], out MSLAltitude);
+			double.TryParse(SeparatedFields[8], NumberStyles.Any, CultureInfo.InvariantCulture, out HDOP);
+			double.TryParse(SeparatedFields[9], NumberStyles.Any, CultureInfo.InvariantCulture, out MSLAltitude);
 			char.TryParse(SeparatedFields[10], out AltitudeUnits);
-			double.TryParse(SeparatedFields[11], out GeoidSeparation);
+			double.TryParse(SeparatedFields[11], NumberStyles.Any, CultureInfo.InvariantCulture, out GeoidSeparation);
 			char.TryParse(SeparatedFields[12], out SeparationUnits);
-			double.TryParse(SeparatedFields[13], out DGNSSAge);
+			double.TryParse(SeparatedFields[13], NumberStyles.Any, CultureInfo.InvariantCulture, out DGNSSAge);
 			int.TryParse(SeparatedFields[14], out DGNSSStationID);
 		}
 		public bool CheckDataSize()
 		{
-			return MessageCount == SeparatedFields.Length ? true : false;
+			return FieldCount == SeparatedFields.Length ? true : false;
 		}
-
+		public object GetData()
+		{
+			return new GGA
+				(
+				TimeStampUTC,
+				Latitude, DirLatitude,
+				Longitude, DirLongitude,
+				QualityIndic, NumberofSVs, HDOP,
+				MSLAltitude, AltitudeUnits,
+				GeoidSeparation, SeparationUnits,
+				DGNSSAge, DGNSSStationID
+				);
+		}
 
 	}
 }
