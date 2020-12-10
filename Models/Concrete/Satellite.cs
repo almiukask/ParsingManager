@@ -6,10 +6,10 @@ namespace ParsingManager.DL.Models.Concrete
 {
 	class Satellite
 	{
-		int PRN;
-		int Constellation;
-		int Gain;
-		double Elevation;
-		double Azimuth;
+		int SatelliteID;
+		//IEnumerable Constellation;
+		int SatelliteCNO;
+		int SatelliteElevation;
+		int SatelliteAzimuth;
 	}
 }

@@ -7,7 +7,7 @@ using ParsingManager.DL.Interfaces;
 
 namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	public class VTG : IMessageService
+	public class VTG : IMessage
 	{
 		public double Course;
 		public char CourseUnits;
@@ -56,17 +56,9 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return FieldCount == SeparatedFields.Length ? true : false;
 		}
-		public object GetData()
+		public IMessage GetData()
 		{
-			return new VTG(
-				Course, CourseUnits, 
-				CourseMagntic, CourseMagUnits, 
-				SpeedKnots, SpeedKnotsUnits, 
-				Speed, SpeedUnits, 
-				PositionMode
-				);
+			return this;
 		}
-
-
 	}
 }

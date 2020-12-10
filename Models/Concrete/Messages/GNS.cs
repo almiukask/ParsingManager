@@ -6,7 +6,7 @@ using ParsingManager.DL.Interfaces;
 
 namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	public class GNS : IMessageService
+	public class GNS : IMessage
 	{
 		public double TimeStampUTC;
 		public double Latitude;
@@ -64,17 +64,10 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return FieldCount == SeparatedFields.Length ? true : false;
 		}
-		public object GetData()
+
+		public IMessage GetData()
 		{
-			return new GNS
-				(TimeStampUTC, 
-				Latitude, DirLatitude, 
-				Longitude, DirLongitude, 
-				PositionMode, NumberofSVs, HDOP, 
-				MSLAltitude, 
-				GeoidSeparation, 
-				DGNSSAge, DGNSSStationID
-				);
+			return this;
 		}
 	}
 }

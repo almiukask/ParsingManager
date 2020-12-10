@@ -5,7 +5,7 @@ using ParsingManager.DL.Interfaces;
 
 namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	public class GSV : IMessageService
+	public class GSV : IMessage
 	{
 		public int NumberOfMessages;
 		public int NumberOfCurrentMessage;
@@ -80,19 +80,10 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 				return 0;
 		}
 
-		public object GetData()
+
+		public IMessage GetData()
 		{
-			return new GSV
-			(
-				NumberOfMessages, NumberOfCurrentMessage, QuantityOfSatellites,
-				SatelliteID,
-				SatelliteElevation,
-				SatelliteAzimuth,
-				SatelliteCNO
-				//SignalID Only NMEA 4.1
-				/*
-				          * ,FieldCount, SatellitesInMessge*/
-			);
+			return this;
 		}
 	}
 }

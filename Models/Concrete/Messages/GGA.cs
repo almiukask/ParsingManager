@@ -6,7 +6,7 @@ using ParsingManager.DL.Interfaces;
 
 namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	public class GGA : IMessageService
+	public class GGA : IMessage
 	{
 		public double TimeStampUTC;
 		public double Latitude;
@@ -70,19 +70,10 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return FieldCount == SeparatedFields.Length ? true : false;
 		}
-		public object GetData()
-		{
-			return new GGA
-				(
-				TimeStampUTC,
-				Latitude, DirLatitude,
-				Longitude, DirLongitude,
-				QualityIndic, NumberofSVs, HDOP,
-				MSLAltitude, AltitudeUnits,
-				GeoidSeparation, SeparationUnits,
-				DGNSSAge, DGNSSStationID
-				);
-		}
 
+		public IMessage GetData()
+		{
+			return this;
+		}
 	}
 }

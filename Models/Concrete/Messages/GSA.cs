@@ -6,7 +6,7 @@ using ParsingManager.DL.Interfaces;
 
 namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	public class GSA : IMessageService
+	public class GSA : IMessage
 	{
 		public char OperationMode;
 		public int NavigationMode;
@@ -80,25 +80,10 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return FieldCount == SeparatedFields.Length ? true : false;
 		}
-		public object GetData()
+
+		public IMessage GetData()
 		{
-			return new GSA
-				(
-					OperationMode, NavigationMode,
-					Satellite1,
-					Satellite2,
-					Satellite3,
-					Satellite4,
-					Satellite5,
-					Satellite6,
-					Satellite7,
-					Satellite8,
-					Satellite9,
-					Satellite10,
-					Satellite11,
-					Satellite12,
-					PDOP, HDOP, VDOP
-				);
+			return this;
 		}
 	}
 }

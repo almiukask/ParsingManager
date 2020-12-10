@@ -6,7 +6,7 @@ using ParsingManager.DL.Interfaces;
 
 namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	public class RMC : IMessageService
+	public class RMC : IMessage
 	{
 		public double TimeStampUTC;
 		public char Status;
@@ -66,18 +66,10 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 			return FieldCount == SeparatedFields.Length ? true : false;
 		}
 
-		public object GetData()
+
+		public IMessage GetData()
 		{
-			return new RMC
-				(TimeStampUTC, 
-				Status, 
-				Latitude, DirLatitude, 
-				Longitude, DirLongitude, 
-				Speed, Course, 
-				Date, 
-				MagneticVariationValue, MagVarIndicator, 
-				PositionMode 
-				);
+			return this;
 		}
 	}
 }

@@ -6,7 +6,7 @@ using ParsingManager.DL.Interfaces;
 
 namespace ParsingManager.DL.Models.Concrete.Messages
 {
-	public class GLL : IMessageService
+	public class GLL : IMessage
 	{
 		public double Latitude;
 		public char DirLatitude;
@@ -47,15 +47,10 @@ namespace ParsingManager.DL.Models.Concrete.Messages
 		{
 			return FieldCount == SeparatedFields.Length ? true : false;
 		}
-		public object GetData()
+
+		public IMessage GetData()
 		{
-			return new GLL
-				(
-				Latitude, DirLatitude,
-				Longitude, DirLongitude,
-				TimeStampUTC,
-				NavigationStatus, PositionMode
-				);
+			return this;
 		}
 	}	
 }
