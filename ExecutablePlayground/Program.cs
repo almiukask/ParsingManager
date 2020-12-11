@@ -6,7 +6,7 @@ using ParsingManager.Models.Concrete;
 using ParsingManager.Models.Concrete.Messages;
 using ParsingManager;
 
-namespace ConsoleApp1
+namespace ExecutablePlayground
 {
 	class Program
 	{
