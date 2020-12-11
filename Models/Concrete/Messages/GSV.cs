@@ -10,12 +10,12 @@ namespace ParsingManager.Models.Concrete.Messages
 		public int NumberOfMessages;
 		public int NumberOfCurrentMessage;
 		public int QuantityOfSatellites;
-		List<Satellite> Satellites = new List<Satellite>();
+		readonly List<Satellite> Satellites = new List<Satellite>();
 		//public int SignalID; only NMEA 4.1
 
 		int FieldCount;
 		int SatellitesInMessge;
-		Enum constellation; 
+		readonly Enum constellation; 
 		const int MaxSatteliteCountPerMessage = 4;
 		const int FieldsPerSatellite = 4;
 		const int NumOfHeadFields = 4;
