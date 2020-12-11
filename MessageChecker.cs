@@ -9,13 +9,17 @@ namespace ParsingManager
 		const char chSumDelimiter = '*';
 		const char FieldDelimiter = ',';
 		const int chSumSizeCharsASCII = 2; //4 when using Read, 2 wehn reading Line
-		const int constellationPlace = 1;
+		const int constellationPlace = 2;
 		const int firstElement = 0;
-		char[] Delimiters = { FieldDelimiter, chSumDelimiter };
+		readonly char[] Delimiters = { FieldDelimiter, chSumDelimiter };
 
 		public MessageChecker(string parsingLine)
 		{
 			ParsingLine = parsingLine;
+		}
+
+		public MessageChecker()
+		{
 		}
 
 		public string ParsingLine { get; set; }
@@ -33,45 +37,43 @@ namespace ParsingManager
 		}
 		public Enum GetConstellation(string[] Values)
 		{
-			switch (Values[firstElement].ToCharArray()[constellationPlace])
+			return (Values[firstElement].ToCharArray()[constellationPlace]) switch
 			{
-				case 'N':
-					return GnssConstellation.MIX;
-				case 'P':
-					return GnssConstellation.GPS;
-				case 'L':
-					return GnssConstellation.GLONASS;
-				case 'A':
-					return GnssConstellation.GALILEO;
-				default:
-					return null;
-			}
+				'N' => GnssConstellation.MIX,
+				'P' => GnssConstellation.GPS,
+				'L' => GnssConstellation.GLONASS,
+				'A' => GnssConstellation.GALILEO,
+				_ => null,
+			};
 		}
 		public Enum GetMessageType(string[] Values)
 		{
 			char[] tempArray = { Values[0][3], Values[0][4], Values[0][5] };
 			string packetType = new string(tempArray);
 
-			switch (packetType)
+			return packetType switch
 			{
-				case "RMC":
-					return MessageType.RMC;
-				case "GNS":
-					return MessageType.GNS;
-				case "GGA":
-					return MessageType.GGA;
-				case "GLL":
-					return MessageType.GLL;
-				case "VTG":
-					return MessageType.VTG;
-				case "GSA":
-					return MessageType.GSA;
-				case "GSV":
-					return MessageType.GSV;
-				default:
-					return null;
-			}
+				"RMC" => MessageType.RMC,
+				"GNS" => MessageType.GNS,
+				"GGA" => MessageType.GGA,
+				"GLL" => MessageType.GLL,
+				"VTG" => MessageType.VTG,
+				"GSA" => MessageType.GSA,
+				"GSV" => MessageType.GSV,
+				_ => null,
+			};
+		}
 
+		public bool IsTypeWithTime(Enum Type)
+		{
+			return Type switch
+			{
+				MessageType.RMC => true,
+				MessageType.GNS => true,
+				MessageType.GGA => true,
+				MessageType.GLL => true,
+				_ => false
+			};
 		}
 		public enum GnssConstellation { GPS, GLONASS, GALILEO, MIX }
 		public enum MessageType { RMC, GNS, GGA, GLL, VTG, GSA, GSV }

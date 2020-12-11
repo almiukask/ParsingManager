@@ -6,7 +6,7 @@ using ParsingManager.Interfaces;
 
 namespace ParsingManager.Models.Concrete.Messages
 {
-	public class GLL : IMessage, IReceiveRequiredData
+	public class GLL : IMessage, IReceiveRequiredData, ITimeInfo
 	{
 		public double Latitude;
 		public char DirLatitude;
@@ -45,7 +45,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length ? true : false;
+			return FieldCount == SeparatedFields.Length;
 		}
 
 		public IMessage GetData()
@@ -60,5 +60,9 @@ namespace ParsingManager.Models.Concrete.Messages
 			instance.Longitude = Longitude;
 			instance.DirLongitude = DirLongitude;
 		}
-		}	
+		public double GetCurrentTime()
+		{
+			return TimeStampUTC;
+		}
+	}	
 }

@@ -54,7 +54,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length ? true : false;
+			return FieldCount == SeparatedFields.Length;
 		}
 		public IMessage GetData()
 		{

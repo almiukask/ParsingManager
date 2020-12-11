@@ -6,7 +6,7 @@ using ParsingManager.Interfaces;
 
 namespace ParsingManager.Models.Concrete.Messages
 {
-	public class GGA : IMessage, IReceiveRequiredData
+	public class GGA : IMessage, IReceiveRequiredData, ITimeInfo
 	{
 		public double TimeStampUTC;
 		public double Latitude;
@@ -68,7 +68,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length ? true : false;
+			return FieldCount == SeparatedFields.Length;
 		}
 
 		public IMessage GetData()
@@ -86,6 +86,10 @@ namespace ParsingManager.Models.Concrete.Messages
 			instance.HDOP = HDOP;
 			instance.MSLAltitude = MSLAltitude;
 			instance.NumberOfSVsUsed = NumberOfSVsUsed;
+		}
+		public double GetCurrentTime()
+		{
+			return TimeStampUTC;
 		}
 	}
 }

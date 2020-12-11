@@ -10,5 +10,6 @@ namespace ParsingManager.Models.Concrete
 		public int SatelliteCNO;
 		public int SatelliteElevation;
 		public int SatelliteAzimuth;
+		public Enum Constellation;
 	}
 }

@@ -15,6 +15,7 @@ namespace ParsingManager.Models.Concrete.Messages
 
 		int FieldCount;
 		int SatellitesInMessge;
+		Enum constellation; 
 		const int MaxSatteliteCountPerMessage = 4;
 		const int FieldsPerSatellite = 4;
 		const int NumOfHeadFields = 4;
@@ -24,6 +25,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		{
 			SeparatedFields = separatedFields;
 			FieldCount = CountFiels();
+			constellation = new MessageChecker().GetConstellation(SeparatedFields);
 		}
 
 		public GSV(int numberOfMessages, int numberOfCurrentMessage, int quantityOfSatellites, List<Satellite> satellites /*,int signalID*/)
@@ -38,26 +40,26 @@ namespace ParsingManager.Models.Concrete.Messages
 		public string[] SeparatedFields { get; set; }
 		public void FillMesage()
 		{
-			int temp = 0;
 			for (int i = 0; i < SatellitesInMessge; i++)
 			{
 				Satellites.Add(new Satellite());
-				int.TryParse(SeparatedFields[i + 4], out temp);
-				Satellites[i].SatelliteID=temp;
+				Satellites[i].Constellation = constellation;
+				int.TryParse(SeparatedFields[i + 4], out int temp);
+				Satellites[i].SatelliteID = temp;
 				int.TryParse(SeparatedFields[i + 5], out temp);
-				Satellites[i].SatelliteElevation=temp;
+				Satellites[i].SatelliteElevation = temp;
 				int.TryParse(SeparatedFields[i + 6], out temp);
-				Satellites[i].SatelliteAzimuth=temp;
+				Satellites[i].SatelliteAzimuth = temp;
 				int.TryParse(SeparatedFields[i + 7], out temp);
-				Satellites[i].SatelliteCNO=temp;
+				Satellites[i].SatelliteCNO = temp;
 
 			}
-			int.TryParse(SeparatedFields[NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite], out temp);
+			//int.TryParse(SeparatedFields[NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite], out temp);
 			//SignalID = temp;
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length ? true : false;
+			return FieldCount == SeparatedFields.Length;
 		}
 		public int CountFiels()
 		{
@@ -82,7 +84,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public void RetrieveSelectedData(Instance instance)
 		{
-
+			
 			foreach (var sat in Satellites)
 			{ instance.SatellitesInfo.Add(sat); }
 			instance.QuantityOfSatellites = QuantityOfSatellites;

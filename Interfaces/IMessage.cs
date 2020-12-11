@@ -9,5 +9,6 @@ namespace ParsingManager.Interfaces
 		public bool CheckDataSize();
 		public void FillMesage();
 		public IMessage GetData();
+
 	}
 }

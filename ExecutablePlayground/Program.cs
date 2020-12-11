@@ -14,6 +14,7 @@ namespace ExecutablePlayground
 		{
 			//string Bandymas = "$GPGSV,3,3,11,23,13,107,32,26,26,281,33,30,64,213,37*43\n\r";
 			string[] Bandymas2 = {
+				"$GNGRS,,1,,,,,,,,,,,,*7E",
 				"$GPRMC,124748.00,A,5448.08452,N,02509.74067,E,63.156,330.72,170215,,,A*5A",
 				"$GPVTG,330.72,T,,M,63.156,N,116.966,K,A*00",
 				"$GPGGA,124748.00,5448.08452,N,02509.74067,E,1,10,0.87,169.4,M,25.7,M,,*5E",
@@ -21,9 +22,24 @@ namespace ExecutablePlayground
 				"$GPGSV,3,1,11,02,13,251,21,05,43,295,34,07,77,093,31,09,43,108,29*76",
 				"$GPGSV,3,2,11,10,50,195,35,13,13,281,29,16,17,034,19,20,29,178,26*7A",
 				"$GPGSV,3,3,11,23,13,107,32,26,26,281,33,30,64,213,37*43",
-				"$GPGLL,5448.08452,N,02509.74067,E,124748.00,A,A*6F"
+				"$GPGLL,5448.08452,N,02509.74067,E,124748.00,A,A*6F",
+				"$GPRMC,124749.00,A,5448.09980,N,02509.72586,E,63.137,330.67,170215,,,A*57",
+				"$GPVTG,330.67,T,,M,63.137,N,116.930,K,A*00",
+				"$GPGGA,124749.00,5448.09980,N,02509.72586,E,1,10,0.87,169.4,M,25.7,M,,*50",
+				"$GPGSA,A,3,09,13,02,07,30,05,10,20,16,23,,,1.46,0.87,1.17*04",
+				"$GPGSV,3,1,11,02,13,251,20,05,43,295,34,07,77,093,30,09,43,108,29*76",
+				"$GPGSV,3,2,11,10,50,195,35,13,13,281,29,16,17,034,19,20,29,178,25*79",
+				"$GPGSV,3,3,11,23,13,107,32,26,26,281,32,30,64,213,36*43",
+				"$GPGLL,5448.09980,N,02509.72586,E,124749.00,A,A*61"
 					};
-			Instance instance = new Instance();
+			List<Instance> instance = new List<Instance>();
+			IReceiveRequiredData receiver;
+			ITimeInfo timeInfo;
+			int instanceCounter = 0;
+			bool firstMessage = true;
+			Enum StartingMessageType = null;
+			double lastKnownTime = 0;
+			double currentTime = 0;
 			foreach (var Bandymas in Bandymas2)
 			{
 				string[] Values;
@@ -42,19 +58,37 @@ namespace ExecutablePlayground
 				{ MessageChecker.MessageType.VTG, new Lazy<IMessage>(() => new VTG(Values)) },
 				{ MessageChecker.MessageType.RMC, new Lazy<IMessage>(() => new RMC(Values)) }
 				};
-					//_parser.GetMessageType(Values);
-					if (MessageLoader[_parser.GetMessageType(Values)].Value.CheckDataSize())
+					var type = _parser.GetMessageType(Values);
+					if (type != null)
 					{
-						MessageLoader[_parser.GetMessageType(Values)].Value.FillMesage();
-						var _message = MessageLoader[_parser.GetMessageType(Values)].Value.GetData();
 
-						IReceiveRequiredData receiver;
-						receiver = _message;
-						receiver.RetrieveSelectedData(instance);
+						if (MessageLoader[type].Value.CheckDataSize())
+						{
+							if (firstMessage)
+							{
+								StartingMessageType = type;
+								firstMessage = false;
+							}
+							MessageLoader[type].Value.FillMesage();
+							var _message = MessageLoader[type].Value.GetData();
+							if (_parser.IsTypeWithTime(type))
+							{
+								timeInfo = (ITimeInfo)MessageLoader[type].Value;
+								currentTime = timeInfo.GetCurrentTime();
+							}
+							if (type.Equals(StartingMessageType) || (currentTime > lastKnownTime))
+							{
+								if (instance.Count != 0) instanceCounter++;
+								instance.Add(new Instance());
+								StartingMessageType = type;
+								lastKnownTime = currentTime;
+							}
 
-						//instance.UpdateAvailableInstanceData(_GSV);
-						//Console.WriteLine(_VTG.Speed);
+							receiver = _message;
+							receiver.RetrieveSelectedData(instance[instanceCounter]);
+						}
 					}
+
 				}
 			}
 			Console.WriteLine();

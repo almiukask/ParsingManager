@@ -6,7 +6,7 @@ using ParsingManager.Interfaces;
 
 namespace ParsingManager.Models.Concrete.Messages
 {
-	public class RMC : IMessage, IReceiveRequiredData
+	public class RMC : IMessage, IReceiveRequiredData, ITimeInfo
 	{
 		public double TimeStampUTC;
 		public char Status;
@@ -63,7 +63,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length ? true : false;
+			return FieldCount == SeparatedFields.Length;
 		}
 
 
@@ -80,5 +80,9 @@ namespace ParsingManager.Models.Concrete.Messages
 			instance.DirLongitude = DirLongitude;
 			instance.Speed = Speed;
 		}
+		public double GetCurrentTime()
+		{
+			return TimeStampUTC;
 		}
+	}
 }
