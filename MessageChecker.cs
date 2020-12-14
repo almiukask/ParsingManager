@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ParsingManager.Interfaces;
+
 
 namespace ParsingManager
 {
-	public class MessageChecker
+	public class MessageChecker : IMessageChecker
 	{
 		const char FirstSymbol = '$';
 		const char chSumDelimiter = '*';
@@ -11,12 +13,13 @@ namespace ParsingManager
 		const int chSumSizeCharsASCII = 2; //4 when using Read, 2 wehn reading Line
 		const int constellationPlace = 2;
 		const int firstElement = 0;
+		const int PacketHeaderSize = 9;
 		readonly char[] Delimiters = { FieldDelimiter, chSumDelimiter };
 
-		public MessageChecker(string parsingLine)
-		{
-			ParsingLine = parsingLine;
-		}
+		//public MessageChecker(string parsingLine)
+		//{
+		//	ParsingLine = parsingLine;
+		//}
 
 		public MessageChecker()
 		{
@@ -24,15 +27,21 @@ namespace ParsingManager
 
 		public string ParsingLine { get; set; }
 
-		public bool IsStructureValid()
+		public bool IsStructureValid(string parsingLine)
 		{
-			if (ParsingLine[firstElement] == FirstSymbol && ParsingLine[(ParsingLine.Length-1) - chSumSizeCharsASCII] == chSumDelimiter) return true;
+			if (parsingLine.Length > PacketHeaderSize)
+			{
+				if (parsingLine[firstElement] == FirstSymbol &&
+				  parsingLine[(parsingLine.Length - 1) - chSumSizeCharsASCII] == chSumDelimiter) 
+					return true;
+				else return false;
+			}
 			else return false;
 		}
-		public string[] SeparetValues()
+		public string[] SeparetValues(string parsingLine)
 		{
 			string[] Values;
-			Values = ParsingLine.Split(Delimiters);
+			Values = parsingLine.Split(Delimiters);
 			return Values;
 		}
 		public Enum GetConstellation(string[] Values)

@@ -6,8 +6,8 @@ namespace ParsingManager.Interfaces
 {
 	public interface IMessage : IReceiveRequiredData
 	{
-		public bool CheckDataSize();
-		public void FillMesage();
+		public bool CheckDataSize(string[] separatedFields);
+		public void FillMesage(string[] separatedFields);
 		public IMessage GetData();
 
 	}

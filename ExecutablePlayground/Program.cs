@@ -44,10 +44,10 @@ namespace ExecutablePlayground
 			{
 				string[] Values;
 
-				MessageChecker _parser = new MessageChecker(Bandymas);
-				if (_parser.IsStructureValid())
+				MessageChecker _parser = new MessageChecker();
+				if (_parser.IsStructureValid(Bandymas))
 				{
-					Values = _parser.SeparetValues();
+					Values = _parser.SeparetValues(Bandymas);
 					Dictionary<Enum, Lazy<IMessage>> MessageLoader = new Dictionary<Enum, Lazy<IMessage>>
 				{
 				{ MessageChecker.MessageType.GGA, new Lazy<IMessage>(() => new GGA(Values)) },
