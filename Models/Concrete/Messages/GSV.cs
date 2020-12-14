@@ -19,6 +19,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		const int MaxSatteliteCountPerMessage = 4;
 		const int FieldsPerSatellite = 4;
 		const int NumOfHeadFields = 4;
+		const int SatelliteDataOffset = 4;
 		const int NumberofNotTreatedFields = 1;
 
 		public GSV(string[] separatedFields)
@@ -40,17 +41,18 @@ namespace ParsingManager.Models.Concrete.Messages
 		public string[] SeparatedFields { get; set; }
 		public void FillMesage()
 		{
+			int temp=0;
 			for (int i = 0; i < SatellitesInMessge; i++)
 			{
 				Satellites.Add(new Satellite());
 				Satellites[i].Constellation = constellation;
-				int.TryParse(SeparatedFields[i + 4], out int temp);
+				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset], out temp);
 				Satellites[i].SatelliteID = temp;
-				int.TryParse(SeparatedFields[i + 5], out temp);
+				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset+1], out temp);
 				Satellites[i].SatelliteElevation = temp;
-				int.TryParse(SeparatedFields[i + 6], out temp);
+				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset+2], out temp);
 				Satellites[i].SatelliteAzimuth = temp;
-				int.TryParse(SeparatedFields[i + 7], out temp);
+				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset+3], out temp);
 				Satellites[i].SatelliteCNO = temp;
 
 			}

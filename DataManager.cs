@@ -10,9 +10,9 @@ using System.Linq;
 
 namespace ParsingManager.DL
 {
-	public class DataManager
+	public class DataManager 
 	{
-		List<Instance> Instances = new List<Instance>();
+		public List<Instance> Instances = new List<Instance>();
 		public void CreateInstances(byte[] readFile)
 		{
 			
@@ -75,6 +75,10 @@ namespace ParsingManager.DL
 
 				}
 			}
+		}
+		public List<Instance> GetInstances()
+		{
+			return Instances;
 		}
 
 
