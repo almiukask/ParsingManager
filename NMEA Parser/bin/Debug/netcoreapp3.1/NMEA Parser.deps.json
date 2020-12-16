@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "NMEA Parser/1.0.0": {
+        "dependencies": {
+          "ParsingManager": "1.0.0",
+          "ParsingManager.DL": "1.0.0"
+        },
+        "runtime": {
+          "NMEA Parser.dll": {}
+        }
+      },
+      "ParsingManager/1.0.0": {
+        "dependencies": {
+          "ParsingManager.DL": "1.0.0"
+        },
+        "runtime": {
+          "ParsingManager.dll": {}
+        }
+      },
+      "ParsingManager.DL/1.0.0": {
+        "runtime": {
+          "ParsingManager.DL.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NMEA Parser/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ParsingManager/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ParsingManager.DL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
