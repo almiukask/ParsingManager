@@ -10,29 +10,27 @@ using System.Linq;
 
 namespace ParsingManager.DL
 {
-	public class DataManager 
+	public class DataManager : IDataManager
 	{
 		public List<Instance> Instances = new List<Instance>();
 		public void CreateInstances(byte[] readFile)
 		{
 			
-			IReceiveRequiredData receiver;
-			ITimeInfo timeInfo;
-			IMessageChecker checker;
+			IReceiveRequiredData _receiver;
+			ITimeInfo _timeInfo;
+			IMessageChecker _checker;
 			int instanceCounter = 0;
 			bool firstMessage = true;
 			Enum StartingMessageType = null;
 			double lastKnownTime = 0;
 			double currentTime = 0;
-			string Input = System.Text.Encoding.ASCII.GetString(readFile);
-			List<string> Lines = Input.Split("\r\n").ToList();
-			checker = new MessageChecker();
-			foreach (var Line in Lines)
+			_checker = new MessageChecker();
+			foreach (var Line in FormLines(readFile))
 			{
 				string[] Values;	
-				if (checker.IsStructureValid(Line)) 
+				if (_checker.IsStructureValid(Line)) 
 				{
-					Values = checker.SeparetValues(Line);
+					Values = _checker.SeparetValues(Line);
 					Dictionary<Enum, Lazy<IMessage>> MessageLoader = new Dictionary<Enum, Lazy<IMessage>>
 				{
 				{ MessageChecker.MessageType.GGA, new Lazy<IMessage>(() => new GGA(Values)) },
@@ -43,7 +41,7 @@ namespace ParsingManager.DL
 				{ MessageChecker.MessageType.VTG, new Lazy<IMessage>(() => new VTG(Values)) },
 				{ MessageChecker.MessageType.RMC, new Lazy<IMessage>(() => new RMC(Values)) }
 				};
-					var type = checker.GetMessageType(Values);
+					var type = _checker.GetMessageType(Values);
 					if (type != null)
 					{
 
@@ -56,10 +54,10 @@ namespace ParsingManager.DL
 							}
 							MessageLoader[type].Value.FillMesage();
 							var _message = MessageLoader[type].Value.GetData();
-							if (checker.IsTypeWithTime(type)) 
+							if (_checker.IsTypeWithTime(type)) 
 							{
-								timeInfo = (ITimeInfo)MessageLoader[type].Value;
-								currentTime = timeInfo.GetCurrentTime();
+								_timeInfo = (ITimeInfo)MessageLoader[type].Value;
+								currentTime = _timeInfo.GetCurrentTime();
 							}
 							if (type.Equals(StartingMessageType) || (currentTime > lastKnownTime))
 							{
@@ -68,13 +66,23 @@ namespace ParsingManager.DL
 								StartingMessageType = type;
 								lastKnownTime = currentTime;
 							}
-							receiver = _message;
-							receiver.RetrieveSelectedData(Instances[instanceCounter]);
+							_receiver = _message;
+							_receiver.RetrieveSelectedData(Instances[instanceCounter]);
 						}
 					}
 
 				}
 			}
+		}
+		List<string> FormLines(byte[] readFile)
+		{
+			string[] LineDelimiters = { "\r\n", "\n" };
+			string Input = Encoding.ASCII.GetString(readFile);
+			List<string> lines = new List<string>();
+			lines = Input.Split(LineDelimiters[0]).ToList();
+			if (lines.Count <= 1)
+				lines = Input.Split(LineDelimiters[1]).ToList();
+			return lines;
 		}
 		public List<Instance> GetInstances()
 		{

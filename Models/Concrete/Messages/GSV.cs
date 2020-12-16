@@ -41,18 +41,18 @@ namespace ParsingManager.Models.Concrete.Messages
 		public string[] SeparatedFields { get; set; }
 		public void FillMesage()
 		{
-			int temp=0;
 			for (int i = 0; i < SatellitesInMessge; i++)
 			{
 				Satellites.Add(new Satellite());
 				Satellites[i].Constellation = constellation;
-				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset], out temp);
+				int temp;
+				int.TryParse(SeparatedFields[(i + 1) * SatelliteDataOffset], out temp);
 				Satellites[i].SatelliteID = temp;
-				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset+1], out temp);
+				int.TryParse(SeparatedFields[(i + 1) * SatelliteDataOffset + 1], out temp);
 				Satellites[i].SatelliteElevation = temp;
-				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset+2], out temp);
+				int.TryParse(SeparatedFields[(i + 1) * SatelliteDataOffset + 2], out temp);
 				Satellites[i].SatelliteAzimuth = temp;
-				int.TryParse(SeparatedFields[(i+1)*SatelliteDataOffset+3], out temp);
+				int.TryParse(SeparatedFields[(i + 1) * SatelliteDataOffset + 3], out temp);
 				Satellites[i].SatelliteCNO = temp;
 
 			}

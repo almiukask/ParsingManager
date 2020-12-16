@@ -49,12 +49,13 @@ namespace ParsingManager.Models.Concrete.Messages
 			char.TryParse(SeparatedFields[6], out SpeedKnotsUnits);
 			double.TryParse(SeparatedFields[7], NumberStyles.Any, CultureInfo.InvariantCulture, out Speed);
 			char.TryParse(SeparatedFields[8], out SpeedUnits);
+			if (SeparatedFields.Length==FieldCount)
 			char.TryParse(SeparatedFields[9], out PositionMode);
 
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length;
+			return FieldCount == SeparatedFields.Length || FieldCount-1 == SeparatedFields.Length;
 		}
 		public IMessage GetData()
 		{

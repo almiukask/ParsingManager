@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using ParsingManager.Models.Concrete;
+using ParsingManager.Interfaces;
+
 namespace ParsingManager
 {
-	public class DataInterpreter
+	public class DataInterpreter : IDataInterpreter
 	{
 		//public Vehicle DataForCalculation { get; set; }
 
@@ -27,7 +29,7 @@ namespace ParsingManager
 					{
 						foreach (var instance in data)
 						{
-							if (instance.HDOP < 100 && instance.HDOP > 0)
+							if (instance.HDOP < 99 && instance.HDOP > 0)
 							{
 								sum += instance.HDOP;
 								validDOPs++;
@@ -39,7 +41,7 @@ namespace ParsingManager
 					{
 						foreach (var instance in data)
 						{
-							if (instance.VDOP < 100 && instance.VDOP > 0)
+							if (instance.VDOP < 99 && instance.VDOP > 0)
 							{
 								sum += instance.VDOP;
 								validDOPs++;
@@ -51,7 +53,7 @@ namespace ParsingManager
 					{
 						foreach (var instance in data)
 						{
-							if (instance.PDOP < 100 && instance.PDOP > 0)
+							if (instance.PDOP < 99 && instance.PDOP > 0)
 							{
 								sum += instance.PDOP;
 								validDOPs++;
@@ -84,26 +86,38 @@ namespace ParsingManager
 				{
 					case MessageChecker.GnssConstellation.GPS:
 						{
-							sumGP += satellite.SatelliteCNO;
-							GPCounter++;
+								if (satellite.SatelliteCNO > 0)
+								{
+									sumGP += satellite.SatelliteCNO;
+									GPCounter++;
+								}
 							break;
 						}
 					case MessageChecker.GnssConstellation.GLONASS:
 						{
-							sumGL += satellite.SatelliteCNO;
-							GLCounter++;
+								if (satellite.SatelliteCNO > 0)
+								{
+									sumGL += satellite.SatelliteCNO;
+									GLCounter++;
+								}
 							break;
 						}
 					case MessageChecker.GnssConstellation.GALILEO:
 						{
-							sumGA += satellite.SatelliteCNO;
-							GACounter++;
+								if (satellite.SatelliteCNO > 0)
+								{
+									sumGA += satellite.SatelliteCNO;
+									GACounter++;
+								}
 							break;
 						}
 					case MessageChecker.GnssConstellation.MIX:
 						{
-							sumGN += satellite.SatelliteCNO;
-							GNCounter++;
+								if (satellite.SatelliteCNO > 0)
+								{
+									sumGN += satellite.SatelliteCNO;
+									GNCounter++;
+								}
 							break;
 						}
 
@@ -129,11 +143,11 @@ namespace ParsingManager
 			{
 				if (instance.QuantityOfSatellites > 0)
 				{
-					sum += instance.QuantityOfSatellites;
+					sum += instance.SatellitesInfo.Count;
 					counter++;
 				}
 			}
-			if (counter != 0) DataForCalculation.AvgSVinUse = sum / counter; else DataForCalculation.AvgSVinUse = 0;
+			if (counter != 0) DataForCalculation.AvgQuantOfSatellites = sum / counter; else DataForCalculation.AvgSVinUse = 0;
 		}
 		double CalculateAvgSVsInUse(List<Instance> data)
 		{

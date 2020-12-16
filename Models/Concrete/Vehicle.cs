@@ -24,6 +24,8 @@ namespace ParsingManager.Models.Concrete
 			{ TypeOfDOP.PDOP, 0 }
 		};
 
+		public double AvgQuantOfSatellites;
+
 		public double AvgSVinUse;
 
 		public enum TypeOfDOP {HDOP, VDOP, PDOP}
