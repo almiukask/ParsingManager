@@ -10,16 +10,11 @@ namespace ParsingManager
 		const char FirstSymbol = '$';
 		const char chSumDelimiter = '*';
 		const char FieldDelimiter = ',';
-		const int chSumSizeCharsASCII = 2; //4 when using Read, 2 wehn reading Line
+		const int chSumSizeCharsASCII = 2; 
 		const int constellationPlace = 2;
 		const int firstElement = 0;
 		const int PacketHeaderSize = 9;
 		readonly char[] Delimiters = { FieldDelimiter, chSumDelimiter };
-
-		//public MessageChecker(string parsingLine)
-		//{
-		//	ParsingLine = parsingLine;
-		//}
 
 		public MessageChecker()
 		{

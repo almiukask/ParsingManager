@@ -8,8 +8,6 @@ namespace ParsingManager
 {
 	public class DataInterpreter : IDataInterpreter
 	{
-		//public Vehicle DataForCalculation { get; set; }
-
 		public void CalculateAverages(Vehicle DataForCalculation)
 		{
 			DataForCalculation.DOPs[Vehicle.TypeOfDOP.HDOP] = CalculateAvgDOP(DataForCalculation.Data, Vehicle.TypeOfDOP.HDOP);

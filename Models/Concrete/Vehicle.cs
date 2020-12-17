@@ -7,7 +7,7 @@ namespace ParsingManager.Models.Concrete
 	public class Vehicle
 	{
 		public List<Instance> Data = new List<Instance>();
-		//public double AvgSatteliteCNO;
+
 		public Dictionary<Enum, double> AvgSatellitesCNO = new Dictionary<Enum, double>
 		{
 			{ MessageChecker.GnssConstellation.GPS, 0 },

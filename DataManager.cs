@@ -27,21 +27,21 @@ namespace ParsingManager.DL
 			_checker = new MessageChecker();
 			foreach (var Line in FormLines(readFile))
 			{
-				string[] Values;	
+				string[] values;	
 				if (_checker.IsStructureValid(Line)) 
 				{
-					Values = _checker.SeparetValues(Line);
+					values = _checker.SeparetValues(Line);
 					Dictionary<Enum, Lazy<IMessage>> MessageLoader = new Dictionary<Enum, Lazy<IMessage>>
 				{
-				{ MessageChecker.MessageType.GGA, new Lazy<IMessage>(() => new GGA(Values)) },
-				{ MessageChecker.MessageType.GLL, new Lazy<IMessage>(() => new GLL(Values)) },
-				{ MessageChecker.MessageType.GNS, new Lazy<IMessage>(() => new GNS(Values)) },
-				{ MessageChecker.MessageType.GSA, new Lazy<IMessage>(() => new GSA(Values)) },
-				{ MessageChecker.MessageType.GSV, new Lazy<IMessage>(() => new GSV(Values)) },
-				{ MessageChecker.MessageType.VTG, new Lazy<IMessage>(() => new VTG(Values)) },
-				{ MessageChecker.MessageType.RMC, new Lazy<IMessage>(() => new RMC(Values)) }
+				{ MessageChecker.MessageType.GGA, new Lazy<IMessage>(() => new GGA(values)) },
+				{ MessageChecker.MessageType.GLL, new Lazy<IMessage>(() => new GLL(values)) },
+				{ MessageChecker.MessageType.GNS, new Lazy<IMessage>(() => new GNS(values)) },
+				{ MessageChecker.MessageType.GSA, new Lazy<IMessage>(() => new GSA(values)) },
+				{ MessageChecker.MessageType.GSV, new Lazy<IMessage>(() => new GSV(values)) },
+				{ MessageChecker.MessageType.VTG, new Lazy<IMessage>(() => new VTG(values)) },
+				{ MessageChecker.MessageType.RMC, new Lazy<IMessage>(() => new RMC(values)) }
 				};
-					var type = _checker.GetMessageType(Values);
+					var type = _checker.GetMessageType(values);
 					if (type != null)
 					{
 
