@@ -23,43 +23,43 @@ namespace ParsingManager
 			int validDOPs = 0;
 			switch (DOPType)
 			{
-				case Vehicle.TypeOfDOP.HDOP:
+					case Vehicle.TypeOfDOP.HDOP:
 					{
 						foreach (var instance in data)
 						{
-							if (instance.HDOP < 99 && instance.HDOP > 0)
+							if (IsValueValid(instance.HDOP))
 							{
-								sum += instance.HDOP;
+								CalculateSum(ref sum, instance.HDOP);
 								validDOPs++;
 							}
 						}
 						break;
 					}
-				case Vehicle.TypeOfDOP.VDOP:
+					case Vehicle.TypeOfDOP.VDOP:
 					{
 						foreach (var instance in data)
 						{
-							if (instance.VDOP < 99 && instance.VDOP > 0)
+							if (IsValueValid(instance.VDOP))
 							{
-								sum += instance.VDOP;
+								CalculateSum(ref sum, instance.VDOP);
 								validDOPs++;
 							}
 						}
 						break;
 					}
-				case Vehicle.TypeOfDOP.PDOP:
+					case Vehicle.TypeOfDOP.PDOP:
 					{
 						foreach (var instance in data)
 						{
-							if (instance.PDOP < 99 && instance.PDOP > 0)
+							if (IsValueValid(instance.PDOP))
 							{
-								sum += instance.PDOP;
+								CalculateSum(ref sum, instance.PDOP);
 								validDOPs++;
 							}
 						}
 						break;
 					}
-				default:
+					default:
 					{
 						return 0;
 					}
@@ -80,47 +80,36 @@ namespace ParsingManager
 			{ 
 			foreach (var satellite in instance.SatellitesInfo)
 			{
-				switch (satellite.Constellation)
-				{
-					case MessageChecker.GnssConstellation.GPS:
+					if ((IsValueValid(satellite.SatelliteCNO)))
+					{
+						switch (satellite.Constellation)
 						{
-								if (satellite.SatelliteCNO > 0)
+							case MessageChecker.GnssConstellation.GPS:
 								{
-									sumGP += satellite.SatelliteCNO;
+									CalculateSum(ref sumGP, (double)satellite.SatelliteCNO);
 									GPCounter++;
+									break;
 								}
-							break;
-						}
-					case MessageChecker.GnssConstellation.GLONASS:
-						{
-								if (satellite.SatelliteCNO > 0)
+							case MessageChecker.GnssConstellation.GLONASS:
 								{
-									sumGL += satellite.SatelliteCNO;
+									CalculateSum(ref sumGL, (double)satellite.SatelliteCNO);
 									GLCounter++;
+									break;
 								}
-							break;
-						}
-					case MessageChecker.GnssConstellation.GALILEO:
-						{
-								if (satellite.SatelliteCNO > 0)
+							case MessageChecker.GnssConstellation.GALILEO:
 								{
-									sumGA += satellite.SatelliteCNO;
+									CalculateSum(ref sumGA, (double)satellite.SatelliteCNO);
 									GACounter++;
+									break;
 								}
-							break;
-						}
-					case MessageChecker.GnssConstellation.MIX:
-						{
-								if (satellite.SatelliteCNO > 0)
+							case MessageChecker.GnssConstellation.MIX:
 								{
-									sumGN += satellite.SatelliteCNO;
+									CalculateSum(ref sumGN, (double)satellite.SatelliteCNO);
 									GNCounter++;
+									break;
 								}
-							break;
 						}
-
-				}
-
+					}
 			}
 		}
 			if (GPCounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GPS] = sumGP / GPCounter;
@@ -131,6 +120,17 @@ namespace ParsingManager
 			else DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GALILEO] = 0;
 			if (GNCounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.MIX] = sumGP / GNCounter;
 			else DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.MIX] = 0;
+		}
+
+		void CalculateSum(ref double suma, double number)
+		{
+			suma += number;
+		}
+
+		bool IsValueValid(double value)
+		{
+			if (value < 99 && value > 0)return true;
+			else return false;
 		}
 
 		void CalculateAvgSVsQ(List<Instance> data, Vehicle DataForCalculation)
