@@ -64,5 +64,5 @@ namespace ParsingManager.Models.Concrete.Messages
 		{
 			return TimeStampUTC;
 		}
-	}	
+	}
 }

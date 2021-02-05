@@ -10,7 +10,7 @@ namespace ParsingManager
 		const char FirstSymbol = '$';
 		const char chSumDelimiter = '*';
 		const char FieldDelimiter = ',';
-		const int chSumSizeCharsASCII = 2; 
+		const int chSumSizeCharsASCII = 2;
 		const int constellationPlace = 2;
 		const int firstElement = 0;
 		const int PacketHeaderSize = 9;
@@ -27,7 +27,7 @@ namespace ParsingManager
 			if (parsingLine.Length > PacketHeaderSize)
 			{
 				if (parsingLine[firstElement] == FirstSymbol &&
-				  parsingLine[(parsingLine.Length - 1) - chSumSizeCharsASCII] == chSumDelimiter) 
+				  parsingLine[(parsingLine.Length - 1) - chSumSizeCharsASCII] == chSumDelimiter)
 					return true;
 				else return false;
 			}

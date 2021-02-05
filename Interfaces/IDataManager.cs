@@ -7,7 +7,7 @@ namespace ParsingManager.Interfaces
 {
 	public interface IDataManager
 	{
-		public void CreateInstances(byte[] readFile);
+		public void CreateInstances(List<string> readFile);
 		public List<Instance> GetInstances();
 	}
 }

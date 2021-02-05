@@ -11,41 +11,46 @@ namespace ParsingManager.Models.Concrete.Messages
 		public int NumberOfCurrentMessage;
 		public int QuantityOfSatellites;
 		readonly List<Satellite> Satellites = new List<Satellite>();
-		//public int SignalID; only NMEA 4.1
+		public int SignalID = 0; //only NMEA 4.1
+		bool NMEAv41 = false;
 
 		int FieldCount;
 		int SatellitesInMessge;
-		readonly Enum constellation; 
+		readonly Enum constellation;
 		const int MaxSatteliteCountPerMessage = 4;
 		const int FieldsPerSatellite = 4;
 		const int NumOfHeadFields = 4;
 		const int SatelliteDataOffset = 4;
 		const int NumberofNotTreatedFields = 1;
+		const int NumberOfNMEAv41messages = 1;
 
 		public GSV(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
+			if (SeparatedFields.Length % 2 == 0) NMEAv41 = true;
 			FieldCount = CountFiels();
 			constellation = new MessageChecker().GetConstellation(SeparatedFields);
 		}
 
-		public GSV(int numberOfMessages, int numberOfCurrentMessage, int quantityOfSatellites, List<Satellite> satellites /*,int signalID*/)
+		public GSV(int numberOfMessages, int numberOfCurrentMessage, int quantityOfSatellites, List<Satellite> satellites, int signalID)
 		{
 			NumberOfMessages = numberOfMessages;
 			NumberOfCurrentMessage = numberOfCurrentMessage;
 			QuantityOfSatellites = quantityOfSatellites;
 			Satellites = satellites;
-			//SignalID = signalID;
+			SignalID = signalID;
 		}
 
 		public string[] SeparatedFields { get; set; }
 		public void FillMesage()
 		{
+
+			int temp;
 			for (int i = 0; i < SatellitesInMessge; i++)
 			{
 				Satellites.Add(new Satellite());
 				Satellites[i].Constellation = constellation;
-				int temp;
+
 				int.TryParse(SeparatedFields[(i + 1) * SatelliteDataOffset], out temp);
 				Satellites[i].SatelliteID = temp;
 				int.TryParse(SeparatedFields[(i + 1) * SatelliteDataOffset + 1], out temp);
@@ -56,8 +61,11 @@ namespace ParsingManager.Models.Concrete.Messages
 				Satellites[i].SatelliteCNO = temp;
 
 			}
-			//int.TryParse(SeparatedFields[NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite], out temp);
-			//SignalID = temp;
+			if (NMEAv41)
+			{
+				int.TryParse(SeparatedFields[NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite], out temp);
+				SignalID = temp;
+			}
 		}
 		public bool CheckDataSize()
 		{
@@ -73,7 +81,7 @@ namespace ParsingManager.Models.Concrete.Messages
 				if (QuantityOfSatellites / (NumberOfCurrentMessage * MaxSatteliteCountPerMessage) > 0) SatellitesInMessge = 4;
 				else SatellitesInMessge = QuantityOfSatellites % MaxSatteliteCountPerMessage;
 				FieldCount = NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite;
-				return FieldCount + NumberofNotTreatedFields;
+				return NMEAv41 ? FieldCount + NumberofNotTreatedFields + NumberOfNMEAv41messages : FieldCount + NumberofNotTreatedFields;
 			}
 			else
 				return 0;
@@ -86,11 +94,11 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public void RetrieveSelectedData(Instance instance)
 		{
-			
+
 			foreach (var sat in Satellites)
 			{ instance.SatellitesInfo.Add(sat); }
-			instance.QuantityOfSatellites = QuantityOfSatellites;
+			instance.QuantityOfSatellites += QuantityOfSatellites;
 
 		}
-		}
+	}
 }

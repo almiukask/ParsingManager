@@ -6,6 +6,7 @@ using ParsingManager.Models.Concrete;
 using ParsingManager.Models.Concrete.Messages;
 using ParsingManager;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 
 namespace ParsingManager.DL
@@ -13,9 +14,9 @@ namespace ParsingManager.DL
 	public class DataManager : IDataManager
 	{
 		public List<Instance> Instances = new List<Instance>();
-		public void CreateInstances(byte[] readFile)
+		public void CreateInstances(List<string> readFile)
 		{
-			
+
 			IReceiveRequiredData _receiver;
 			ITimeInfo _timeInfo;
 			IMessageChecker _checker;
@@ -25,10 +26,11 @@ namespace ParsingManager.DL
 			double lastKnownTime = 0;
 			double currentTime = 0;
 			_checker = new MessageChecker();
-			foreach (var Line in FormLines(readFile))
+
+			foreach (var Line in readFile)
 			{
-				string[] values;	
-				if (_checker.IsStructureValid(Line)) 
+				string[] values;
+				if (_checker.IsStructureValid(Line))
 				{
 					values = _checker.SeparetValues(Line);
 					Dictionary<Enum, Lazy<IMessage>> MessageLoader = new Dictionary<Enum, Lazy<IMessage>>
@@ -54,7 +56,7 @@ namespace ParsingManager.DL
 							}
 							MessageLoader[type].Value.FillMesage();
 							var _message = MessageLoader[type].Value.GetData();
-							if (_checker.IsTypeWithTime(type)) 
+							if (_checker.IsTypeWithTime(type))
 							{
 								_timeInfo = (ITimeInfo)MessageLoader[type].Value;
 								currentTime = _timeInfo.GetCurrentTime();
@@ -74,16 +76,14 @@ namespace ParsingManager.DL
 				}
 			}
 		}
-		List<string> FormLines(byte[] readFile)
-		{
-			string[] LineDelimiters = { "\r\n", "\n" };
-			string Input = Encoding.ASCII.GetString(readFile);
-			List<string> lines = new List<string>();
-			lines = Input.Split(LineDelimiters[0]).ToList();
-			if (lines.Count <= 1)
-				lines = Input.Split(LineDelimiters[1]).ToList();
-			return lines;
-		}
+		//List<string> FormLines(byte[] readFile)
+		//{
+		//	string Input = Encoding.ASCII.GetString(readFile);
+		//	List<string> lines = new List<string>();
+		//	var match0 = Regex.Matches(Input, @"\$G([A-Z]{4}),(.*?)\*([0-9A-F]{2})", RegexOptions.Singleline);
+
+		//	return lines;
+		//}
 		public List<Instance> GetInstances()
 		{
 			return Instances;

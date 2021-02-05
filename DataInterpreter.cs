@@ -23,7 +23,7 @@ namespace ParsingManager
 			int validDOPs = 0;
 			switch (DOPType)
 			{
-					case Vehicle.TypeOfDOP.HDOP:
+				case Vehicle.TypeOfDOP.HDOP:
 					{
 						foreach (var instance in data)
 						{
@@ -35,7 +35,7 @@ namespace ParsingManager
 						}
 						break;
 					}
-					case Vehicle.TypeOfDOP.VDOP:
+				case Vehicle.TypeOfDOP.VDOP:
 					{
 						foreach (var instance in data)
 						{
@@ -47,7 +47,7 @@ namespace ParsingManager
 						}
 						break;
 					}
-					case Vehicle.TypeOfDOP.PDOP:
+				case Vehicle.TypeOfDOP.PDOP:
 					{
 						foreach (var instance in data)
 						{
@@ -59,7 +59,7 @@ namespace ParsingManager
 						}
 						break;
 					}
-					default:
+				default:
 					{
 						return 0;
 					}
@@ -77,9 +77,9 @@ namespace ParsingManager
 			double sumGN = 0;
 			int GNCounter = 0;
 			foreach (var instance in data)
-			{ 
-			foreach (var satellite in instance.SatellitesInfo)
 			{
+				foreach (var satellite in instance.SatellitesInfo)
+				{
 					if ((IsValueValid(satellite.SatelliteCNO)))
 					{
 						switch (satellite.Constellation)
@@ -110,15 +110,15 @@ namespace ParsingManager
 								}
 						}
 					}
+				}
 			}
-		}
 			if (GPCounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GPS] = sumGP / GPCounter;
 			else DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GPS] = 0;
 			if (GLCounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GLONASS] = sumGL / GLCounter;
 			else DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GLONASS] = 0;
-			if (GACounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GALILEO] = sumGP / GACounter;
+			if (GACounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GALILEO] = sumGA / GACounter;
 			else DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.GALILEO] = 0;
-			if (GNCounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.MIX] = sumGP / GNCounter;
+			if (GNCounter != 0) DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.MIX] = sumGN / GNCounter;
 			else DataForCalculation.AvgSatellitesCNO[MessageChecker.GnssConstellation.MIX] = 0;
 		}
 
@@ -129,7 +129,7 @@ namespace ParsingManager
 
 		bool IsValueValid(double value)
 		{
-			if (value < 99 && value > 0)return true;
+			if (value < 99 && value > 0) return true;
 			else return false;
 		}
 
@@ -145,7 +145,7 @@ namespace ParsingManager
 					counter++;
 				}
 			}
-			if (counter != 0) DataForCalculation.AvgQuantOfSatellites = sum / counter; else DataForCalculation.AvgSVinUse = 0;
+			if (counter != 0) DataForCalculation.AvgQuantOfSatellites = sum / counter; else DataForCalculation.AvgQuantOfSatellites = 0;
 		}
 		double CalculateAvgSVsInUse(List<Instance> data)
 		{
@@ -159,7 +159,7 @@ namespace ParsingManager
 					counter++;
 				}
 			}
-			return counter!=0? sum/counter : 0;
+			return counter != 0 ? sum / counter : 0;
 		}
 
 	}

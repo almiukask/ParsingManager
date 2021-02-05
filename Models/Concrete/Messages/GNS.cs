@@ -20,8 +20,10 @@ namespace ParsingManager.Models.Concrete.Messages
 		public double GeoidSeparation;
 		public double DGNSSAge;
 		public int DGNSSStationID;
-		//char NavigationStatus; only NMEA 4.1
-		const int FieldCount = 15;
+		char NavigationStatus;// only NMEA 4.1
+		bool NMEAv41 = false;
+		const int FieldCountV40 = 15;
+		const int FieldCountV41 = 16;
 		public GNS(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
@@ -51,18 +53,19 @@ namespace ParsingManager.Models.Concrete.Messages
 			char.TryParse(SeparatedFields[3], out DirLatitude);
 			double.TryParse(SeparatedFields[4], NumberStyles.Any, CultureInfo.InvariantCulture, out Longitude);
 			char.TryParse(SeparatedFields[5], out DirLongitude);
-			PositionMode= SeparatedFields[6];
+			PositionMode = SeparatedFields[6];
 			int.TryParse(SeparatedFields[7], out NumberOfSVsUsed);
 			double.TryParse(SeparatedFields[8], NumberStyles.Any, CultureInfo.InvariantCulture, out HDOP);
 			double.TryParse(SeparatedFields[9], NumberStyles.Any, CultureInfo.InvariantCulture, out MSLAltitude);
 			double.TryParse(SeparatedFields[10], NumberStyles.Any, CultureInfo.InvariantCulture, out GeoidSeparation);
 			double.TryParse(SeparatedFields[11], NumberStyles.Any, CultureInfo.InvariantCulture, out DGNSSAge);
 			int.TryParse(SeparatedFields[12], out DGNSSStationID);
-			//char.TryParse(SeparatedFields[13], out NavigationStatus); only NMEA 4.1
+			if (NMEAv41)
+				char.TryParse(SeparatedFields[13], out NavigationStatus); //only NMEA 4.1
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length;
+			return NMEAv41 ? FieldCountV41 == SeparatedFields.Length : FieldCountV40 == SeparatedFields.Length;
 		}
 
 		public IMessage GetData()

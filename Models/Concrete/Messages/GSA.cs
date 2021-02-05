@@ -25,11 +25,14 @@ namespace ParsingManager.Models.Concrete.Messages
 		public double PDOP;
 		public double HDOP;
 		public double VDOP;
-		//int SystemID; Only NMEA 4.1
-		const int FieldCount = 19;
+		int SystemID; //Only NMEA 4.1
+		const int FieldCountv40 = 19;
+		const int FieldCountv41 = 20;
+		bool NMEAV41 = false;
 		public GSA(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
+			NMEAV41 = CheckNMEAVersion(separatedFields);
 		}
 
 		public GSA(char operationMode, int navigationMode, int satellite1, int satellite2, int satellite3, int satellite4, int satellite5, int satellite6, int satellite7, int satellite8, int satellite9, int satellite10, int satellite11, int satellite12, double pDOP, double hDOP, double vDOP)
@@ -74,11 +77,17 @@ namespace ParsingManager.Models.Concrete.Messages
 			double.TryParse(SeparatedFields[15], NumberStyles.Any, CultureInfo.InvariantCulture, out PDOP);
 			double.TryParse(SeparatedFields[16], NumberStyles.Any, CultureInfo.InvariantCulture, out HDOP);
 			double.TryParse(SeparatedFields[17], NumberStyles.Any, CultureInfo.InvariantCulture, out VDOP);
-			//int.TryParse(SeparatedFields[18], out SystemID); only NMEA 4.1
+			if (NMEAV41)
+				int.TryParse(SeparatedFields[18], out SystemID); //only NMEA 4.1
 		}
 		public bool CheckDataSize()
 		{
-			return FieldCount == SeparatedFields.Length;
+			if (NMEAV41)
+				return FieldCountv41 == SeparatedFields.Length;
+			else
+			{
+				return FieldCountv40 == SeparatedFields.Length;
+			}
 		}
 
 		public IMessage GetData()
@@ -87,9 +96,17 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public void RetrieveSelectedData(Instance instance)
 		{
-			instance.HDOP=HDOP;
-			instance.PDOP=PDOP;
-			instance.VDOP=VDOP;
+			instance.HDOP = HDOP;
+			instance.PDOP = PDOP;
+			instance.VDOP = VDOP;
 		}
+		bool CheckNMEAVersion(string[] fields)
+		{
+			if (fields.Length == FieldCountv41)
+				return true;
+			else
+				return false;
+
 		}
+	}
 }
