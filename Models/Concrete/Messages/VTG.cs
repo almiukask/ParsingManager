@@ -63,7 +63,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public void RetrieveSelectedData(Instance instance)
 		{
-			instance.Speed = Speed;
+			instance.Speed = Speed/3.6; //kmh connversion to m/s
 		}
 		}
 }

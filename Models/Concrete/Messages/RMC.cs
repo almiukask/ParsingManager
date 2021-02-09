@@ -81,7 +81,7 @@ namespace ParsingManager.Models.Concrete.Messages
 			instance.DirLatitude = DirLatitude;
 			instance.Longitude = Longitude;
 			instance.DirLongitude = DirLongitude;
-			instance.Speed = Speed;
+			instance.Speed = Speed* 0.514444444; //knots conversion to meters/s
 		}
 		public double GetCurrentTime()
 		{
