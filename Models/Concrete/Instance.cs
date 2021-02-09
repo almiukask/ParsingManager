@@ -17,6 +17,7 @@ namespace ParsingManager.Models.Concrete
 		public double Latitude;
 		public char DirLatitude;
 		public double MSLAltitude;
+		public double GeoidSeparation;
 		public int NumberOfSVsUsed;
 		public int QuantityOfSatellites;
 		public List<Satellite> SatellitesInfo=new List<Satellite>();
@@ -25,7 +26,7 @@ namespace ParsingManager.Models.Concrete
 		{
 		}
 
-		public Instance(double timeStampUTC, double speed, double pDOP, double hDOP, double vDOP, double longitude, char dirLongitude, double latitude, char dirLatitude, double mSLAltitude, int numberOfSVsUsed, List<Satellite> satellitesInfo, int quantityOfSatellites)
+		public Instance(double timeStampUTC, double speed, double pDOP, double hDOP, double vDOP, double longitude, char dirLongitude, double latitude, char dirLatitude, double mSLAltitude, double geoidSeparation, int numberOfSVsUsed, List<Satellite> satellitesInfo, int quantityOfSatellites)
 		{
 			TimeStampUTC = timeStampUTC;
 			Speed = speed;
@@ -37,6 +38,7 @@ namespace ParsingManager.Models.Concrete
 			Latitude = latitude;
 			DirLatitude = dirLatitude;
 			MSLAltitude = mSLAltitude;
+			GeoidSeparation = geoidSeparation;
 			NumberOfSVsUsed = numberOfSVsUsed;
 			SatellitesInfo = satellitesInfo;
 			QuantityOfSatellites = quantityOfSatellites;

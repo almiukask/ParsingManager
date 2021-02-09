@@ -81,6 +81,7 @@ namespace ParsingManager.Models.Concrete.Messages
 			instance.DirLongitude = DirLongitude;
 			instance.HDOP = HDOP;
 			instance.MSLAltitude = MSLAltitude;
+			instance.GeoidSeparation = GeoidSeparation;
 			instance.NumberOfSVsUsed = NumberOfSVsUsed;
 		}
 		public double GetCurrentTime()
