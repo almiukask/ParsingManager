@@ -76,14 +76,7 @@ namespace ParsingManager.DL
 				}
 			}
 		}
-		//List<string> FormLines(byte[] readFile)
-		//{
-		//	string Input = Encoding.ASCII.GetString(readFile);
-		//	List<string> lines = new List<string>();
-		//	var match0 = Regex.Matches(Input, @"\$G([A-Z]{4}),(.*?)\*([0-9A-F]{2})", RegexOptions.Singleline);
 
-		//	return lines;
-		//}
 		public List<Instance> GetInstances()
 		{
 			return Instances;

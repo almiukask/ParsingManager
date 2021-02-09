@@ -97,6 +97,7 @@ namespace ParsingManager.Models.Concrete.Messages
 
 			foreach (var sat in Satellites)
 			{ instance.SatellitesInfo.Add(sat); }
+			if (NumberOfCurrentMessage==1)
 			instance.QuantityOfSatellites += QuantityOfSatellites;
 
 		}
