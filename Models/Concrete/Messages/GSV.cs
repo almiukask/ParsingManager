@@ -94,11 +94,18 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		public void RetrieveSelectedData(Instance instance)
 		{
-
+			if (NumberOfCurrentMessage == 1)
+				instance.QuantityOfSatellites += QuantityOfSatellites;
 			foreach (var sat in Satellites)
-			{ instance.SatellitesInfo.Add(sat); }
-			if (NumberOfCurrentMessage==1)
-			instance.QuantityOfSatellites += QuantityOfSatellites;
+			{ 
+				instance.SatellitesInfo.Add(sat);
+				if (sat.SatelliteCNO > 0 & sat.SatelliteCNO < 99)
+				{ 
+					instance.AvgCNO += (double)sat.SatelliteCNO; 
+
+				}
+			}
+
 
 		}
 	}

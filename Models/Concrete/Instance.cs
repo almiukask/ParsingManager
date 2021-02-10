@@ -21,12 +21,13 @@ namespace ParsingManager.Models.Concrete
 		public int NumberOfSVsUsed;
 		public int QuantityOfSatellites;
 		public List<Satellite> SatellitesInfo=new List<Satellite>();
+		public double AvgCNO;
 
 		public Instance()
 		{
 		}
 
-		public Instance(double timeStampUTC, double speed, double pDOP, double hDOP, double vDOP, double longitude, char dirLongitude, double latitude, char dirLatitude, double mSLAltitude, double geoidSeparation, int numberOfSVsUsed, List<Satellite> satellitesInfo, int quantityOfSatellites)
+		public Instance(double timeStampUTC, double speed, double pDOP, double hDOP, double vDOP, double longitude, char dirLongitude, double latitude, char dirLatitude, double mSLAltitude, double geoidSeparation, int numberOfSVsUsed, List<Satellite> satellitesInfo, int quantityOfSatellites, double avgCNO)
 		{
 			TimeStampUTC = timeStampUTC;
 			Speed = speed;
@@ -42,6 +43,7 @@ namespace ParsingManager.Models.Concrete
 			NumberOfSVsUsed = numberOfSVsUsed;
 			SatellitesInfo = satellitesInfo;
 			QuantityOfSatellites = quantityOfSatellites;
+			AvgCNO = avgCNO;
 		}
 	}
 }
