@@ -12,7 +12,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		public int QuantityOfSatellites;
 		readonly List<Satellite> Satellites = new List<Satellite>();
 		public int SignalID = 0; //only NMEA 4.1
-		bool NMEAv41 = false;
+		bool NMEAV41 = false;
 
 		int FieldCount;
 		int SatellitesInMessge;
@@ -27,7 +27,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		public GSV(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
-			if (SeparatedFields.Length % 2 == 0) NMEAv41 = true;
+			if (SeparatedFields.Length % 2 == 0) NMEAV41 = true;
 			FieldCount = CountFiels();
 			constellation = new MessageChecker().GetConstellation(SeparatedFields);
 		}
@@ -61,7 +61,7 @@ namespace ParsingManager.Models.Concrete.Messages
 				Satellites[i].SatelliteCNO = temp;
 
 			}
-			if (NMEAv41)
+			if (NMEAV41)
 			{
 				int.TryParse(SeparatedFields[NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite], out temp);
 				SignalID = temp;
@@ -81,7 +81,7 @@ namespace ParsingManager.Models.Concrete.Messages
 				if (QuantityOfSatellites / (NumberOfCurrentMessage * MaxSatteliteCountPerMessage) > 0) SatellitesInMessge = 4;
 				else SatellitesInMessge = QuantityOfSatellites % MaxSatteliteCountPerMessage;
 				FieldCount = NumOfHeadFields + SatellitesInMessge * FieldsPerSatellite;
-				return NMEAv41 ? FieldCount + NumberofNotTreatedFields + NumberOfNMEAv41messages : FieldCount + NumberofNotTreatedFields;
+				return NMEAV41 ? FieldCount + NumberofNotTreatedFields + NumberOfNMEAv41messages : FieldCount + NumberofNotTreatedFields;
 			}
 			else
 				return 0;

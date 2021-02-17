@@ -21,12 +21,13 @@ namespace ParsingManager.Models.Concrete.Messages
 		public char MagVarIndicator;
 		public char PositionMode;
 		char NavigationStatus; //Only NMEA 4.1
-		bool NMEAv41 = false;
+		bool NMEAV41 = false;
 		const int FieldCountV40 = 14;
 		const int FieldCountV41 = 15;
 		public RMC(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
+			NMEAV41 = CheckNMEAVersion(separatedFields);
 		}
 
 		public RMC(double timeStampUTC, char status, double latitude, char dirLatitude, double longitude, char dirLongitude, double speed, double course, string date, double magneticVariationValue, char magVarIndicator, char positionMode)
@@ -60,13 +61,13 @@ namespace ParsingManager.Models.Concrete.Messages
 			double.TryParse(SeparatedFields[10], NumberStyles.Any, CultureInfo.InvariantCulture, out MagneticVariationValue);
 			char.TryParse(SeparatedFields[11], out MagVarIndicator);
 			char.TryParse(SeparatedFields[12], out PositionMode);
-			if (NMEAv41)
+			if (NMEAV41)
 				char.TryParse(SeparatedFields[13], out NavigationStatus); //only NMEA 4.1
 
 		}
 		public bool CheckDataSize()
 		{
-			return NMEAv41 ? FieldCountV41 == SeparatedFields.Length : FieldCountV40 == SeparatedFields.Length;
+			return NMEAV41 ? FieldCountV41 == SeparatedFields.Length : FieldCountV40 == SeparatedFields.Length;
 		}
 
 
@@ -86,6 +87,14 @@ namespace ParsingManager.Models.Concrete.Messages
 		public double GetCurrentTime()
 		{
 			return TimeStampUTC;
+		}
+		bool CheckNMEAVersion(string[] fields)
+		{
+			if (fields.Length == FieldCountV41)
+				return true;
+			else
+				return false;
+
 		}
 	}
 }

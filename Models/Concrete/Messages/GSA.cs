@@ -26,8 +26,8 @@ namespace ParsingManager.Models.Concrete.Messages
 		public double HDOP;
 		public double VDOP;
 		int SystemID; //Only NMEA 4.1
-		const int FieldCountv40 = 19;
-		const int FieldCountv41 = 20;
+		const int FieldCountV40 = 19;
+		const int FieldCountV41 = 20;
 		bool NMEAV41 = false;
 		public GSA(string[] separatedFields)
 		{
@@ -83,10 +83,10 @@ namespace ParsingManager.Models.Concrete.Messages
 		public bool CheckDataSize()
 		{
 			if (NMEAV41)
-				return FieldCountv41 == SeparatedFields.Length;
+				return FieldCountV41 == SeparatedFields.Length;
 			else
 			{
-				return FieldCountv40 == SeparatedFields.Length;
+				return FieldCountV40 == SeparatedFields.Length;
 			}
 		}
 
@@ -102,7 +102,7 @@ namespace ParsingManager.Models.Concrete.Messages
 		}
 		bool CheckNMEAVersion(string[] fields)
 		{
-			if (fields.Length == FieldCountv41)
+			if (fields.Length == FieldCountV41)
 				return true;
 			else
 				return false;

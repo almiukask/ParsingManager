@@ -21,12 +21,13 @@ namespace ParsingManager.Models.Concrete.Messages
 		public double DGNSSAge;
 		public int DGNSSStationID;
 		char NavigationStatus;// only NMEA 4.1
-		bool NMEAv41 = false;
+		bool NMEAV41 = false;
 		const int FieldCountV40 = 15;
 		const int FieldCountV41 = 16;
 		public GNS(string[] separatedFields)
 		{
 			SeparatedFields = separatedFields;
+			NMEAV41 = CheckNMEAVersion(separatedFields);
 		}
 
 		public GNS(double timeStampUTC, double latitude, char dirLatitude, double longitude, char dirLongitude, string positionMode, int numberOfSVsUsed, double hDOP, double mSLAltitude, double geoidSeparation, double dGNSSAge, int dGNSSStationID)
@@ -60,12 +61,12 @@ namespace ParsingManager.Models.Concrete.Messages
 			double.TryParse(SeparatedFields[10], NumberStyles.Any, CultureInfo.InvariantCulture, out GeoidSeparation);
 			double.TryParse(SeparatedFields[11], NumberStyles.Any, CultureInfo.InvariantCulture, out DGNSSAge);
 			int.TryParse(SeparatedFields[12], out DGNSSStationID);
-			if (NMEAv41)
+			if (NMEAV41)
 				char.TryParse(SeparatedFields[13], out NavigationStatus); //only NMEA 4.1
 		}
 		public bool CheckDataSize()
 		{
-			return NMEAv41 ? FieldCountV41 == SeparatedFields.Length : FieldCountV40 == SeparatedFields.Length;
+			return NMEAV41 ? FieldCountV41 == SeparatedFields.Length : FieldCountV40 == SeparatedFields.Length;
 		}
 
 		public IMessage GetData()
@@ -87,6 +88,14 @@ namespace ParsingManager.Models.Concrete.Messages
 		public double GetCurrentTime()
 		{
 			return TimeStampUTC;
+		}
+		bool CheckNMEAVersion(string[] fields)
+		{
+			if (fields.Length == FieldCountV41)
+				return true;
+			else
+				return false;
+
 		}
 	}
 }
